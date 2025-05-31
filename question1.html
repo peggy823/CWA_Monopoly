@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reveal.js - 鞍部氣象站</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css">
+  <style>
+    html {
+      font-size: clamp(18px, 1.5vw, 24px);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .reveal {
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
+      font-size: 1.0em;
+    }
+    .reveal .slides {
+      max-height: 100vh;
+    }
+    section {
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 1.2em;
+    }
+    h2 {
+      background: rgba(12, 11, 11, 0.8);
+      padding: 0.6em 1.2em;
+      border-radius: 2em;
+      font-size: 4em;
+    }
+    .answer-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 45%;
+      margin: 0.3em auto;
+      padding: 0.2em 0.8em;
+      background: rgba(255,255,255,0.85);
+      border-radius: 0.4em;
+    }
+    .answer-label {
+      font-weight: bold;
+      width: 6em;      /* 固定寬度 */
+      display: inline-block;
+      text-align: right;
+    }
+    .answer-text {
+      opacity: 0;
+      visibility: hidden;
+      display: inline-block;
+      min-height: 1.4em;
+      flex: 1;
+      min-width: 10em;
+      text-align: left;
+      transition: opacity 0.6s ease;
+      padding-left: 0.6em;
+    }
+    .visible {
+      opacity: 1 !important;
+      visibility: visible ;
+    }
+
+    .reveal-button {
+      padding: 0.2em 0.8em;
+      font-size: 0.7em;
+      cursor: pointer;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 0.6em;
+    }
+    .reset-button {
+      position: fixed;
+      top: 0.5em;
+      right: 0.5em;
+      padding: 0.5em 1em;
+      font-size: 0.7em;
+      background: #2f3033;
+      color: white;
+      border: none;
+      border-radius: 0.6em;
+      opacity: 0.8;
+      cursor: pointer;
+    
+    }
+    @media screen and (max-width: 768px) {
+      html {
+        font-size: 1.0vw;
+      }
+    }
+    @media screen and (min-width: 1440px) {
+      html {
+        font-size: 1.0vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>問題：鞍部氣象站直觀印象</h2>
+        <div class="answer-row">
+      <span class="answer-label">第1名：</span>
+      <button id="btn1" class="reveal-button">顯示答案</button>
+      <span id="ans1" class="answer-text">陽明山/國家公園</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第2名：</span>
+      <button id="btn2" class="reveal-button">顯示答案</button>
+      <span id="ans2" class="answer-text">大屯山</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第3名：</span>
+      <button id="btn3" class="reveal-button">顯示答案</button>
+      <span id="ans3" class="answer-text">冬天很冷</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第4名：</span>
+      <button id="btn4" class="reveal-button">顯示答案</button>
+      <span id="ans4" class="answer-text">霧</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第5名：</span>
+      <button id="btn5" class="reveal-button">顯示答案</button>
+      <span id="ans5" class="answer-text">火山</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第6名：</span>
+      <button id="btn6" class="reveal-button">顯示答案</button>
+      <span id="ans6" class="answer-text">下雪</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第7名：</span>
+      <button id="btn7" class="reveal-button">顯示答案</button>
+      <span id="ans7" class="answer-text">高山氣象</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第8名：</span>
+      <button id="btn8" class="reveal-button">顯示答案</button>
+      <span id="ans8" class="answer-text">登山</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第9名：</span>
+      <button id="btn9" class="reveal-button">顯示答案</button>
+      <span id="ans9" class="answer-text">硫磺</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第10名：</span>
+      <button id="btn10" class="reveal-button">顯示答案</button>
+      <span id="ans10" class="answer-text">高山中的鞍部/馬鞍</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第11名：</span>
+      <button id="btn11" class="reveal-button">顯示答案</button>
+      <span id="ans11" class="answer-text">擎天崗</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第12名：</span>
+      <button id="btn12" class="reveal-button">顯示答案</button>
+      <span id="ans12" class="answer-text">二子坪</span>
+    </div>
+<div class="answer-row">
+      <span class="answer-label">第13名：</span>
+      <button id="btn13" class="reveal-button">顯示答案</button>
+      <span id="ans13" class="answer-text">溫泉</span>
+    </div>
+        <button class="reset-button" onclick="resetAnswers()">Restart</button>
+        <div style="text-align:center; margin-top: 20px;">
+          <a href="index.html" style="
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            background-color: #2d3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+          ">返回首頁</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: false,
+      center: false,
+      hash: true,
+      width: 1280,
+      height: 720,
+      transition: 'fade'
+    });
+
+    function resetAnswers() {
+      for (let i = 1; i <= 13; i++) {
+        localStorage.removeItem("ans" + i + "Shown");
+      }
+      location.reload();
+    }
+
+    window.addEventListener("load", () => {
+      for (let i = 1; i <= 13; i++) {
+        const btn = document.getElementById("btn" + i);
+        const ans = document.getElementById("ans" + i);
+
+        if (btn) {
+          btn.addEventListener("click", () => {
+            if (ans) {
+              ans.classList.add("visible");
+              btn.style.display = "none";
+              localStorage.setItem("ans" + i + "Shown", "true");
+            }
+          });
+        }
+
+        if (localStorage.getItem("ans" + i + "Shown")) {
+          if (ans) ans.classList.add("visible");
+          if (btn) btn.style.display = "none";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
