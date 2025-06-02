@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reveal.js - 問題共用版</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css">
+  <style>
+    html {
+      font-size: clamp(18px, 1.5vw, 24px);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .reveal {
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #000;
+      font-size: 1.0em;
+    }
+    .reveal .slides { max-height: 100vh; }
+    section {
+      width: 100%;
+      height: 100%;
+      display: block;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 1.2em;
+    }
+    h2 {
+      background: rgba(12, 11, 11, 0.8);
+      padding: 0.6em 1.2em;
+      border-radius: 2em;
+      font-size: 4em;
+    }
+    .answer-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 45%;
+      margin: 0.3em auto;
+      padding: 0.2em 0.8em;
+      background: rgba(255,255,255,0.85);
+      border-radius: 0.4em;
+    }
+    .answer-label {
+      font-weight: bold;
+      width: 6em;
+      display: inline-block;
+      text-align: right;
+    }
+    .answer-text {
+      opacity: 0;
+      visibility: hidden;
+      display: inline-block;
+      min-height: 1.4em;
+      flex: 1;
+      min-width: 10em;
+      text-align: left;
+      transition: opacity 0.6s ease;
+      padding-left: 0.6em;
+    }
+    .visible { opacity: 1 !important; visibility: visible; }
+    .reveal-button {
+      padding: 0.2em 0.8em;
+      font-size: 0.7em;
+      cursor: pointer;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 0.6em;
+    }
+    .reset-button {
+      position: fixed;
+      top: 0.5em;
+      right: 0.5em;
+      padding: 0.5em 1em;
+      font-size: 0.7em;
+      background: #2f3033;
+      color: white;
+      border: none;
+      border-radius: 0.6em;
+      opacity: 0.8;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 768px) {
+      html { font-size: 1.0vw; }
+    }
+    @media screen and (min-width: 1440px) {
+      html { font-size: 1.0vw; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2 id="station-title">問題：氣象站</h2>
+        <div id="answers-container"></div>
+        <button class="reset-button" onclick="resetAnswers()">Restart</button>
+        <div style="text-align:center; margin-top: 20px;">
+          <a href="index1.html" style="
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            background-color: #2d3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+          ">返回首頁</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: false,
+      center: false,
+      hash: true,
+      width: 1280,
+      height: 720,
+      transition: 'fade'
+    });
+
+    function getSheetFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("sheet");
+    }
+
+    function resetAnswers() {
+      const sheet = getSheetFromURL();
+      for (let i = 1; i <= 20; i++) {
+        localStorage.removeItem(sheet + "_ans" + i + "_Shown");
+      }
+      location.reload();
+    }
+
+    const allData = {"竹子湖": ["海芋/海芋季/海芋步道 72個", "溫泉 67個", "陽明山 56個", "櫻花 40個", "繡球花 24個", "火山 18個", "七星山 12個", "陽明山國家公園 10個", "濃霧濕冷 10個", "花季/花海/賞花 10個", "硫磺 8個", "夜景 7個", "竹子湖 5個"], "彭佳嶼": ["彭佳嶼燈塔 56個", "海島 31個", "海釣 29個", "強風浪大/東北季風 26個", "北方三島/最北島嶼 25個", "台灣最北/東北/國之北疆 24個", "坐船 21個", "鐵炮百合/麝香百合花 18個", "西北颱/颱風 16個", "探空/高空氣象觀測/探空氣球 15個", "軍方/軍事管制區 13個", "基隆外海離島/基隆 12個", "離島 12個"], "東吉島": ["燈塔 30個", "離島 29個", "南方四島 27個", "強風 27個", "澎湖 25個", "黑水溝 25個", "羊 23個", "坐船 14個", "漁港/捕魚/魚種多樣 14個", "南方四島國家公園(南方蔚藍海域的寶石) 14個", "海島 11個", "玄武岩 10個", "藍洞 10個"], "玉山": ["下雪 51個", "東北亞/台灣最高峰 49個", "東北亞/全臺最高氣象站 32個", "千元大鈔 22個", "登山 19個", "冷 16個", "直升機 14個", "高山 14個", "百岳 13個", "最高行政機關 13個", "雲海 13個", "黃喉貂/黑熊 12個", "玉山北峰 12個"], "基隆": ["雨都 106個", "基隆港/港口 72個", "廟口夜市/廟口小吃 50個", "郵輪 30個", "漁港 10個", "潮濕 12個", "基隆夜市 8個", "港務大樓 12個", "海產/海鮮 7個", "最北端的綜觀天氣觀測站 7個", "老鷹 6個", "屋頂 5個", "海運/船 6個"], "蘇澳": ["冷泉 81個", "海鮮 31個", "蘇花公路 30個", "漁港 28個", "蘇澳港 24個", "港口 24個", "南方澳 20個", "下雨 19個", "港口氣象站 14個", "在港務局樓上/屋頂觀測坪 10個", "港務大樓 8個", "自動站/目前已是無人站 8個", "斷橋 7個"], "後龍": ["高速公路旁的氣象站 72個", "苗栗國 55個", "後龍過港隧道 37個", "客家 30個", "原後龍收費站 25個", "媽祖 14個", "客家桐花 13個", "後龍好望角 13個", "風車/風力發電 12個", "高鐵 10個", "濃霧 9個", "新設站點 9個", "造橋鄉 8個"], "澎湖": ["花火節 66個", "玄武岩 29個", "風很大/東北季風強 26個", "海鮮 20個", "跨海大橋 20個", "外婆的澎湖灣 16個", "天后宮 15個", "雙心石滬 14個", "黑糖糕 14個", "離島 13個", "仙人掌冰 12個", "菊島 11個", "仙人掌 10個"], "恆春": ["落山風 67個", "國境之南/本島最南端 46個", "墾丁 33個", "洋蔥 23個", "恆春古城 22個", "四季如春 19個", "海角七號 17個", "熱 16個", "墾丁國家公園 13個", "最南邊的有人氣象站 12個", "核電廠/核三廠 11個", "古城門 8個", "沙灘 6個"], "宜蘭": ["多雨 41個", "蘭陽平原 30個", "三星蔥 28個", "龜山島 26個", "童玩節 21個", "牛舌餅 18個", "礁溪溫泉 14個", "雪山隧道 14個", "太平山 12個", "臺北後花園 11個", "傳藝中心 10個", "鴨賞 10個", "冬山河 9個"], "花蓮": ["地震 76個", "太魯閣 42個", "麻糬 27個", "探空氣球/高空氣象觀測 19個", "山 16個", "颱風多 15個", "七星潭 14個", "原住民 13個", "太魯閣國家公園 13個", "東大門夜市 10個", "剝皮辣椒 9個", "清水斷崖 8個", "雷達 8個"], "金門": ["貢糖 45個", "高粱酒 44個", "風獅爺 40個", "高粱 33個", "小三通 22個", "823砲戰 21個", "戰地 17個", "濃霧 13個", "牛肉乾 10個", "軍人 10個", "閩式建築 9個", "戰地遺跡 9個", "戰地風光 8個"], "嘉義": ["火雞肉飯 68個", "農業 34個", "嘉南平原 31個", "北回歸線 24個", "農業氣象站 19個", "阿里山 18個", "KANO 18個", "方塊酥 12個", "林聰明 8個", "有稻田 8個", "文化路夜市 7個", "林聰明砂鍋魚頭 7個", "地震 6個"], "古坑": ["咖啡 125個", "劍湖山 58個", "綠色隧道 29個", "農業大縣 19個", "花卉 10個", "草嶺 10個", "花卉中心 10個", "斗六 10個", "新站 7個", "雲林 6個", "雲林縣 6個", "最新的氣象站 6個", "茶園 6個"], "大武": ["焚風 74個", "釋迦 32個", "南迴公路 27個", "太平洋 17個", "海邊 16個", "颱風 15個", "南迴 12個", "原住民 11個", "多良車站 8個", "南迴鐵路 7個", "東海岸 7個", "海岸山脈 7個", "漁港 6個"], "日月潭": ["紅茶 57個", "日月潭 30個", "泳渡日月潭 24個", "九族文化村 16個", "九蛙 15個", "纜車 14個", "湖光山色 14個", "觀光景點 13個", "邵族 13個", "涵碧樓 12個", "貓囒山 12個", "環潭自行車 8個", "風景區 7個"], "阿里山": ["日出 63個", "神木 53個", "小火車 47個", "櫻花 27個", "雲海 25個", "森林火車 20個", "古蹟 14個", "茶葉 12個", "森林遊樂區 11個", "高山茶 11個", "檜木 9個", "阿里山森林遊樂區 8個", "日出雲海 6個"], "臺東": ["釋迦 48個", "熱氣球 33個", "焚風 22個", "知本溫泉 21個", "鐵花村 20個", "颱風 19個", "池上米 13個", "熱氣球嘉年華 11個", "伯朗大道 9個", "金針花 8個", "原住民 7個", "日式建築 7個", "太平洋 7個"], "成功": ["三仙台 50個", "漁港 39個", "旗魚 28個", "颱風 18個", "柴魚 13個", "太平洋 13個", "海邊 12個", "海鮮 11個", "蔚藍海岸 11個", "鏢旗魚 9個", "焚風 8個", "新港 8個", "鬼頭刀 7個"], "高雄": ["愛河 30個", "港都 26個", "駁二特區 23個", "都會公園 20個", "打狗 17個", "高雄港 15個", "85大樓 15個", "旗津 13個", "高雄都會公園 11個", "壽山 10個", "西子灣 9個", "熱 9個", "工業 9個"], "臺中": ["太陽餅 51個", "臺中公園 30個", "逢甲夜市 26個", "一中街 22個", "台中公園 22個", "慶記 18個", "科博館 13個", "大甲媽 10個", "火力發電廠 9個", "百年站 8個", "高美濕地 6個", "金錢豹 6個", "消波塊 6個"], "新竹": ["米粉 64個", "貢丸 33個", "九降風 27個", "城隍廟 26個", "風城 25個", "科學園區 25個", "竹科 21個", "科技園區 19個", "風 15個", "新竹風 12個", "新竹科學園區 9個", "新竹米粉 8個", "風大 7個"], "蘭嶼": ["飛魚 72個", "達悟族 67個", "拼板舟 26個", "颱風 25個", "核廢料 15個", "丁字褲 12個", "離島 11個", "地下屋 10個", "原住民 9個", "浮潛 8個", "潛水 7個", "強風 6個", "綠島 5個"], "新北": ["碧潭 61個", "探空氣球 37個", "新店 19個", "檢校中心 16個", "吊橋 11個", "探空 10個", "耶誕城 10個", "綠建築 8個", "高空觀測 8個", "風洞 7個", "放氣球 7個", "新北園區 7個", "儀器校驗 7個"], "新屋": ["永安漁港 48個", "衛星接收站 31個", "桃園機場 23個", "客家文化 23個", "海邊 19個", "偏僻 13個", "強風 13個", "風大 10個", "綠色隧道 10個", "桃園 8個", "風力發電 8個", "埤塘 8個", "空曠 7個"], "南區氣象中心": ["古蹟 33個", "小吃 32個", "古都 26個", "胡椒管 23個", "安平古堡 22個", "赤崁樓 15個", "牛肉湯 14個", "孔廟 13個", "氣象博物館 12個", "台南測候所 10個", "奇美博物館 9個", "鄭成功 8個", "古城 6個"], "馬祖": ["藍眼淚 82個", "濃霧 35個", "八八坑道 17個", "老酒麵線 17個", "軍事背景 14個", "芹壁 13個", "很冷 13個", "同島一命 13個", "陳高 12個", "離島 11個", "媽祖 9個", "淡菜 9個", "酒 7個"], "田中": ["高鐵 42個", "米倉 24個", "高鐵站 23個", "八卦山 18個", "肉圓 17個", "田中馬拉松 17個", "展示場 15個", "稻田 14個", "鹿港 13個", "高鐵彰化站 12個", "彰化縣 12個", "馬拉松 10個", "花卉 10個"], "梧棲": ["梧棲漁港 51個", "台中港 46個", "三井OUTLET 30個", "港口 22個", "高美濕地 20個", "海線 17個", "臺中港 17個", "強風 12個", "港務大樓 12個", "OUTLET 11個", "風大 11個", "海鮮 9個", "工業區 8個"], "淡水": ["漁人碼頭 40個", "阿給 40個", "紅毛城 31個", "淡水老街 26個", "老街 22個", "夕陽 19個", "鐵蛋 16個", "紅樹林 14個", "淡水河 12個", "淡水阿給 11個", "魚丸 9個", "無人站 7個", "很冷 7個"], "臺北天文站(臺北站)": ["望遠鏡 47個", "天文日曆 41個", "太陽黑子 38個", "天文觀測 28個", "觀星 27個", "總統府 19個", "太空天氣 13個", "星星月亮太陽 11個", "天龍國 10個", "在中央氣象署 6個", "首都 5個", "北一女 5個", "署本部 5個"]};
+
+    const sheet = getSheetFromURL();
+    const data = allData[sheet];
+    const title = document.getElementById("station-title");
+    const container = document.getElementById("answers-container");
+
+    if (!data) {
+      title.innerText = "⚠ 無效的站名參數！請使用 ?sheet=站名";
+    } else {
+      title.innerText = "問題：" + sheet + " 氣象站直觀印象";
+      data.forEach((ans, index) => {
+        const id = index + 1;
+        const row = document.createElement("div");
+        row.className = "answer-row";
+        row.innerHTML = `
+          <span class="answer-label">第${id}名：</span>
+          <button id="btn${id}" class="reveal-button">顯示答案</button>
+          <span id="ans${id}" class="answer-text">${ans}</span>
+        `;
+        container.appendChild(row);
+      });
+
+      window.addEventListener("load", () => {
+        data.forEach((_, i) => {
+          const id = i + 1;
+          const btn = document.getElementById("btn" + id);
+          const ans = document.getElementById("ans" + id);
+          if (btn && ans) {
+            btn.addEventListener("click", () => {
+              ans.classList.add("visible");
+              btn.style.display = "none";
+              localStorage.setItem(sheet + "_ans" + id + "_Shown", "true");
+            });
+            if (localStorage.getItem(sheet + "_ans" + id + "_Shown")) {
+              ans.classList.add("visible");
+              btn.style.display = "none";
+            }
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
