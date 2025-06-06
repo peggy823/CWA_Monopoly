@@ -37,7 +37,7 @@
 <body>
   <div class="map-container">
     <img src="map_homepage.png" alt="台灣地圖">
-    <a class="hotspot" style="top: 6%; left:76%;" href="question.html?sheet=鞍部">鞍部氣象站</a>
+    <a class="hotspot" style="top: 6.5%; left:76%;" href="question.html?sheet=鞍部">鞍部氣象站</a>
 <a class="hotspot" style="top: 10%; left:76%;" href="question.html?sheet=竹子湖">竹子湖氣象站</a>
 <a class="hotspot" style="top: 0%; left:81%;" href="question.html?sheet=彭佳嶼">彭佳嶼氣象站</a>
 <a class="hotspot" style="top:55%; left:47%" href="question.html?sheet=東吉島">東吉島氣象站</a>
@@ -70,5 +70,36 @@
 <a class="hotspot" style="top: 4%; left:69%;" href="question.html?sheet=淡水">臺北氣象站<br>淡水站區</a>
 <a class="hotspot" style="top:14%; left:71%;" href="question.html?sheet=臺北天文站(臺北站)">臺北天文站<br>(臺北站)</a>
   </div>
+
+  <button onclick="resetAllAnswers()" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 999;
+  ">清除所有答案記錄</button>
+
+  <script>
+    function resetAllAnswers() {
+      const sheets = [
+        "鞍部", "竹子湖", "彭佳嶼", "東吉島", "玉山", "基隆", "蘇澳", "後龍", "澎湖", "恆春",
+        "宜蘭", "花蓮", "金門", "嘉義", "古坑", "大武", "日月潭", "阿里山", "臺東", "成功",
+        "高雄", "臺中", "新竹", "蘭嶼", "新北", "新屋", "南區氣象中心", "馬祖", "田中",
+        "梧棲", "淡水", "臺北天文站(臺北站)"
+      ];
+      sheets.forEach(sheet => {
+        for (let i = 1; i <= 20; i++) {
+          localStorage.removeItem(`${sheet}_ans${i}_Shown`);
+        }
+      });
+      alert("✅ 已清除所有站的答案記錄！");
+    }
+  </script>
 </body>
 </html>
