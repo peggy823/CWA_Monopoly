@@ -57,7 +57,7 @@
     .answer-text {
       visibility: hidden;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease-in, transform 0.5s ease-in;
       min-height: 1.4em;
       flex: 1;
       min-width: 10em;
@@ -84,7 +84,7 @@
     }
     .reset-button {
       position: fixed;
-      top: 0.5em;
+      top: 3em;
       right: 0.5em;
       padding: 0.5em 1em;
       font-size: 0.7em;
@@ -94,6 +94,11 @@
       border-radius: 0.6em;
       opacity: 0.8;
       cursor: pointer;
+    }
+    .score-num {
+      font-size: 1.1em; /* 可以調整成你要的大小 */
+      font-weight: bold;
+      /*color: #e74c3c; /* 也可改顏色或拿掉 */
     }
     /* 外層：維持你原本位置設定 */
     #timerPositionWrapper {
@@ -169,7 +174,7 @@
         <button id="toggle">開始</button>
         
         <div id="answers-container"></div>
-        <button class="reset-button" onclick="resetAnswers()">Restart</button>
+        <button class="reset-button" onclick="resetAnswers()">清除答案</button>
         <div style="text-align:center; margin-top: 20px;">
           <a href="index.html" style="
             display: inline-block;
@@ -1897,11 +1902,22 @@
       data.forEach((ans, index) => {
         const id = index + 1;
         const row = document.createElement("div");
+
+        // 分離「前面的文字」和「括號內的部分」
+        const parts = ans.text.match(/^(.+?)\s*(（?\(?\d+個;\s*\d+\.?\d*%[)）]?)$/);
+
+        let coloredText = ans.text; // 預設為原始文字
+
+        if (parts) {
+          const before = parts[1]; // 前半段（火山）
+          const after = parts[2];  // 括號內（(25個; 5.2%)）
+          coloredText = `<span style="color: blue;">${before}</span> ${after}`;
+        }
         row.className = "answer-row";
         row.innerHTML = `
-          <span class="answer-label">${ans.score}點：</span>
+          <span class="answer-label"><span class="score-num">${ans.score}</span> 點：</span>
           <button id="btn${id}" class="reveal-button">顯示答案</button>
-          <span id="ans${id}" class="answer-text">${ans.text}</span>
+          <span id="ans${id}" class="answer-text">${coloredText}</span>
         `;
         container.appendChild(row);
       });
