@@ -1953,59 +1953,83 @@
       });
     }
     // === 倒數計時器 ===
-    let timeLeft  = 20; // 總秒數
+    // === 精準倒數計時器 ===
+    let totalSeconds = 20;
+    let timeLeft = totalSeconds;
     let timer = null;
     let isRunning = false;
+    let startTime = null;
+    let pausedElapsed = 0;
 
     const timerDisplay = document.getElementById("timer");
     const toggleButton = document.getElementById("toggle");
     const countdownMusic = document.getElementById("countdownMusic");
 
-
-    function updateDisplay(remaining) {
-      timerDisplay.innerText = String(timeLeft).padStart(2, '0');
+    function updateDisplay(seconds) {
+      const s = Math.max(0, Math.ceil(seconds));
+      timerDisplay.innerText = s.toString().padStart(2, '0'); // ✅ 秒數補 0
     }
 
-    function tick() {
-      timeLeft -= 1;
-      updateDisplay();
+    function startTick() {
+      startTime = performance.now() - pausedElapsed;
 
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        isRunning = false;
-        toggleButton.innerText = "重新";
-        // 音樂播完整就好，不強制停止
+      function tick() {
+        const now = performance.now();
+        const elapsed = (now - startTime) / 1000;
+        const remaining = totalSeconds - elapsed;
+
+        timeLeft = remaining;
+
+        updateDisplay(remaining);
+
+        if (remaining <= 0) {
+          updateDisplay(0);
+          isRunning = false;
+          toggleButton.innerText = "重新";
+          timer = null;
+          return; // ✅ 停止動畫，不影響音樂播放
+        }
+
+        timer = requestAnimationFrame(tick);
       }
+
+      timer = requestAnimationFrame(tick);
     }
 
     toggleButton.addEventListener("click", () => {
       if (!isRunning && timeLeft <= 0) {
-        timeLeft = 20;
-        updateDisplay();
+        // 重新開始
+        timeLeft = totalSeconds;
+        pausedElapsed = 0;
+        updateDisplay(timeLeft);
         toggleButton.innerText = "開始";
+        countdownMusic.pause();
         countdownMusic.currentTime = 0;
         return;
       }
 
       if (!isRunning) {
-        updateDisplay(); // 顯示一次初始值
+        // 開始或繼續
         isRunning = true;
         toggleButton.innerText = "暫停";
-        countdownMusic.currentTime = 0;
-        countdownMusic.play();
 
-        // 延遲 1 秒後再開始 tick（第一秒顯示 20）
-        timer = setInterval(tick, 1000);
+        if (countdownMusic.paused) {
+          countdownMusic.play().catch(err => console.error("音樂播放錯誤：", err));
+        }
+
+        startTick();
       } else {
-        clearInterval(timer);
+        // 暫停
         isRunning = false;
+        cancelAnimationFrame(timer);
+        pausedElapsed = performance.now() - startTime;
         toggleButton.innerText = "繼續";
         countdownMusic.pause();
       }
     });
 
     // 初始化
-    updateDisplay();
+    updateDisplay(totalSeconds);
   </script>
   <audio id="correct" src="correct.mp3" preload="auto"></audio>
   <img id="correctImage" src="孔明雲寶.png" alt="答對囉！" style="
