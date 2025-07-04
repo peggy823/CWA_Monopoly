@@ -442,7 +442,7 @@
                           "score": 12
                         },
                         {
-                          "text": "大甲媽/媽祖繞境活動/大甲鎮瀾宮  (28個; 6.4%)",
+                          "text": "大甲媽/媽祖遶境活動/大甲鎮瀾宮  (28個; 6.4%)",
                           "score": 11
                         },
                         {
@@ -1996,7 +1996,6 @@
         const remaining = totalSeconds - elapsed;
 
         timeLeft = remaining;
-
         updateDisplay(remaining);
 
         if (remaining <= 0) {
@@ -2012,7 +2011,14 @@
 
       timer = requestAnimationFrame(tick);
     }
+    function startCountdown() {
+      if (isRunning) return;
 
+      isRunning = true;
+      toggleButton.innerText = "暫停";
+      countdownMusic.play().catch(err => console.error("音樂播放錯誤：", err));
+      startTick();
+    }
     toggleButton.addEventListener("click", () => {
       if (!isRunning && timeLeft <= 0) {
         // 重新開始
@@ -2026,14 +2032,10 @@
       }
 
       if (!isRunning) {
-        // 開始或繼續
+        // 繼續
         isRunning = true;
         toggleButton.innerText = "暫停";
-
-        if (countdownMusic.paused) {
-          countdownMusic.play().catch(err => console.error("音樂播放錯誤：", err));
-        }
-
+        countdownMusic.play().catch(err => console.error("音樂播放錯誤：", err));
         startTick();
       } else {
         // 暫停
@@ -2047,6 +2049,14 @@
 
     // 初始化
     updateDisplay(totalSeconds);
+
+    // ✅ 頁面載入後自動開始倒數 + 播放音樂
+    window.addEventListener("load", () => {
+      isRunning = true;
+      toggleButton.innerText = "暫停";
+      countdownMusic.play().catch(err => console.warn("⚠ 音樂播放失敗：", err));
+      startTick();
+    });
   </script>
   <audio id="correct" src="correct.mp3" preload="auto"></audio>
   <img id="correctImage" src="孔明雲寶.png" alt="答對囉！" style="
