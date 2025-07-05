@@ -31,13 +31,14 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      padding-top: 1.2em;
+      padding-top: 0;
     }
     h2 {
       background: rgba(12, 11, 11, 0.8);
       padding: 0.6em 1.2em;
       border-radius: 2em;
       font-size: 4em;
+      margin-top: 0; /* 可依需要微調為 -0.5em 或 0.2em 等 */
     }
     .answer-row {
       display: flex;
@@ -1890,6 +1891,114 @@
                           "text": "Openhouse  (6個; 1.4%)",
                           "score": 2
                         }
+                      ],
+                      "基隆": [
+                        {
+                          "text": "雨都  (106個; 24.3%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "基隆港/港口/漁港  (82個; 18.8%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "廟口夜市/廟口小吃/基隆夜市  (58個; 13.3%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "郵輪  (30個; 6.9%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "潮濕  (12個; 2.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "港務大樓  (12個; 2.8%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "海產/海鮮  (7個; 1.6%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "老鷹  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "海運/船  (6個; 1.4%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "屋頂  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "東北季風  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "雞籠  (5個; 1.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "海邊  (5個; 1.1%)",
+                          "score": 4
+                        }
+                      ],
+                      "阿里山": [
+                        {
+                          "text": "阿里山森林鐵路/小火車  (73個; 16.7%)",
+                          "score": 13
+                        },
+                        {
+                          "text": "日出  (70個; 16.1%)",
+                          "score": 12
+                        },
+                        {
+                          "text": "百年巨木/神木群/森林  (52個; 11.9%)",
+                          "score": 11
+                        },
+                        {
+                          "text": "阿里山森林遊樂區/眠月線/風景名勝/旅遊景點  (41個; 9.4%)",
+                          "score": 10
+                        },
+                        {
+                          "text": "雲海  (29個; 6.7%)",
+                          "score": 9
+                        },
+                        {
+                          "text": "櫻花  (28個; 6.4%)",
+                          "score": 8
+                        },
+                        {
+                          "text": "日式古蹟  (26個; 6.0%)",
+                          "score": 7
+                        },
+                        {
+                          "text": "茶葉/高山茶  (23個; 5.3%)",
+                          "score": 6
+                        },
+                        {
+                          "text": "檜木  (10個; 2.3%)",
+                          "score": 5
+                        },
+                        {
+                          "text": "高山氣象觀測  (9個; 2.1%)",
+                          "score": 4
+                        },
+                        {
+                          "text": "高山青/姑娘美如水  (8個; 1.8%)",
+                          "score": 3
+                        },
+                        {
+                          "text": "霧  (5個; 1.1%)",
+                          "score": 2
+                        },
+                        {
+                          "text": "原住民文化/鄒族  (5個; 1.1%)",
+                          "score": 2
+                        }
                       ]
                     }
     const sheet = getSheetFromURL();
@@ -1909,15 +2018,27 @@
         const parts = ans.text.match(/^(.+?)\s*(（?\(?\d+個;\s*\d+\.?\d*%[)）]?)$/);
 
         let coloredText = ans.text; // 預設為原始文字
+        let scoreColor = "blue";    // 預設藍色
 
+        // 根據分數設定顏色
+        if (ans.score >= 10) {
+          scoreColor = "orange";
+        } else if (ans.score >= 6) {
+          scoreColor = "green";
+        }
+
+        // 套用顏色到文字部分
         if (parts) {
           const before = parts[1]; // 前半段（火山）
           const after = parts[2];  // 括號內（(25個; 5.2%)）
-          coloredText = `<span style="color: blue;">${before}</span> ${after}`;
+          coloredText = `<span style="color: ${scoreColor};">${before}</span> ${after}`;
+        } else {
+          coloredText = `<span style="color: ${scoreColor};">${ans.text}</span>`;
         }
+
         row.className = "answer-row";
         row.innerHTML = `
-          <span class="answer-label"><span class="score-num">${ans.score}</span> 點：</span>
+          <span class="answer-label"><span class="score-num" style="color: ${scoreColor};">${ans.score}</span> 點：</span>
           <button id="btn${id}" class="reveal-button">顯示答案</button>
           <span id="ans${id}" class="answer-text">${coloredText}</span>
         `;
