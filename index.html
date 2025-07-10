@@ -87,6 +87,8 @@
 
   <script>
     function resetAllAnswers() {
+      const confirmed = comfirm(是否已過半天，要清除所有氣象站的答案？");
+      if (!confirmed) return;
       const sheets = [
         "鞍部", "竹子湖", "彭佳嶼", "東吉島", "玉山", "基隆", "蘇澳", "後龍", "澎湖", "恆春",
         "宜蘭", "花蓮", "金門", "嘉義", "古坑", "大武", "日月潭", "阿里山", "臺東", "成功",
